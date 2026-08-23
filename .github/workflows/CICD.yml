@@ -23,9 +23,17 @@ jobs:
 
   security-check:
     runs-on: ubuntu-latest
-    
+  
     steps:
     - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: Resolve Maven Dependencies
+      run: mvn dependency:resolve
     - name: Trivy Installation
       run: |
         sudo apt-get install wget apt-transport-https gnupg
@@ -38,9 +46,7 @@ jobs:
     - name: GitLeaks Installation
       run: sudo apt install gitleaks -y
     - name: GitLeaks Code Scan
-      run: gitleaks detect source . -r gitleaks-reports.json -f json
-
-      
+      run: gitleaks detect source . -r gitleaks-reports.json -f json      
 
       
 
