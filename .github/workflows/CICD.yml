@@ -18,7 +18,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn compile
+      run: mvn clean install -DskipTests
 
 
   security-check:
@@ -41,7 +41,7 @@ jobs:
         wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
         echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
         sudo apt-get update
-        sudo apt-get install trivy
+        sudo apt-get install trivy -y
     - name: Trivy Fs Scan
       run: trivy fs --format table -o fs-report.json .
     - name: GitLeaks Installation
